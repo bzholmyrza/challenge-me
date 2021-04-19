@@ -1,9 +1,8 @@
 package kz.edu.astanait.challengeme.controller;
 
 import kz.edu.astanait.challengeme.entity.Task;
-import kz.edu.astanait.challengeme.repository.TaskRepository;
 import kz.edu.astanait.challengeme.search.TaskSearchValues;
-import org.springframework.core.env.ConfigurableEnvironment;
+import kz.edu.astanait.challengeme.service.TaskService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,18 +21,18 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/task") // базовый адрес
 public class TaskController {
-    private final TaskRepository taskRepository; // сервис для доступа к данным (напрямую к репозиториям не обращаемся)
+    private final TaskService taskService; // сервис для доступа к данным (напрямую к репозиториям не обращаемся)
 
     // автоматическое внедрение экземпляра класса через конструктор
     // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
-    public TaskController(TaskRepository taskRepository, ConfigurableEnvironment environment) {
-        this.taskRepository = taskRepository;
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     // получение всех данных
     @GetMapping("/all")
     public ResponseEntity<List<Task>> findAll() {
-        return  ResponseEntity.ok(taskRepository.findAll());
+        return  ResponseEntity.ok(taskService.findAll());
     }
 
     // добавление
@@ -48,7 +47,7 @@ public class TaskController {
         if (task.getTitle() == null || task.getTitle().trim().length() == 0) {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(taskRepository.save(task)); // возвращаем созданный объект со сгенерированным id
+        return ResponseEntity.ok(taskService.add(task)); // возвращаем созданный объект со сгенерированным id
     }
 
     // обновление
@@ -63,7 +62,7 @@ public class TaskController {
             return new ResponseEntity("missed param: title", HttpStatus.NOT_ACCEPTABLE);
         }
         // save работает как на добавление, так и на обновление
-        taskRepository.save(task);
+        taskService.update(task);
         return new ResponseEntity(HttpStatus.OK); // просто отправляем статус 200 (операция прошла успешно)
     }
 
@@ -74,7 +73,7 @@ public class TaskController {
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try {
-            taskRepository.deleteById(id);
+            taskService.deleteById(id);
         }catch (EmptyResultDataAccessException e){
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
@@ -89,7 +88,7 @@ public class TaskController {
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try{
-            task = taskRepository.findById(id).get();
+            task = taskService.findById(id);
         }catch (NoSuchElementException e){ // если объект не будет найден
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
@@ -125,7 +124,7 @@ public class TaskController {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
 
         // результат запроса с постраничным выводом
-        Page result = taskRepository.findByParams(text, completed, priorityId, categoryId, pageRequest);
+        Page result = taskService.findByParams(text, completed, priorityId, categoryId, pageRequest);
 
         // результат запроса
         return ResponseEntity.ok(result);

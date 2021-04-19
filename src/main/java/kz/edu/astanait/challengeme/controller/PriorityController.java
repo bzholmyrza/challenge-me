@@ -1,8 +1,8 @@
 package kz.edu.astanait.challengeme.controller;
 
 import kz.edu.astanait.challengeme.entity.Priority;
-import kz.edu.astanait.challengeme.repository.PriorityRepository;
 import kz.edu.astanait.challengeme.search.PrioritySearchValues;
+import kz.edu.astanait.challengeme.service.PriorityService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +16,17 @@ import java.util.NoSuchElementException;
 // иначе пришлось бы выполнять лишнюю работу, использовать @ResponseBody для ответа, указывать тип отправки JSON
 @RequestMapping("/priority")// базовый адрес
 public class PriorityController {
-    private PriorityRepository priorityRepository; // доступ к данным из БД
+    private PriorityService priorityService; // доступ к данным из БД
 
     // автоматическое внедрение экземпляра класса через конструктор
     // не используем @Autowired ля переменной класса, т.к. "Field injection is not recommended "
-    public PriorityController(PriorityRepository priorityRepository) {
-            this.priorityRepository = priorityRepository;
+    public PriorityController(PriorityService priorityService) {
+            this.priorityService = priorityService;
     }
 
     @GetMapping("/all")
     public List<Priority> findAll() {
-        return priorityRepository.findAllByOrderByIdAsc();
+        return priorityService.findAll();
     }
     
     @PostMapping("/add")
@@ -45,7 +45,7 @@ public class PriorityController {
             return new ResponseEntity("missed param: color", HttpStatus.NOT_ACCEPTABLE);
         }
         // save работает как на добавление, так и на обновление
-        return ResponseEntity.ok(priorityRepository.save(priority));
+        return ResponseEntity.ok(priorityService.add(priority));
     }
 
     @PutMapping("/update")
@@ -63,7 +63,7 @@ public class PriorityController {
             return new ResponseEntity("missed param: color", HttpStatus.NOT_ACCEPTABLE);
         }
         // save работает как на добавление, так и на обновление
-        return ResponseEntity.ok(priorityRepository.save(priority));
+        return ResponseEntity.ok(priorityService.update(priority));
     }
 
     // параметр id передаются не в BODY запроса, а в самом URL
@@ -73,7 +73,7 @@ public class PriorityController {
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try{
-            priority = priorityRepository.findById(id).get();
+            priority = priorityService.findById(id);
         }catch (NoSuchElementException e){ // если объект не будет найден
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
@@ -87,7 +87,7 @@ public class PriorityController {
         // можно обойтись и без try-catch, тогда будет возвращаться полная ошибка (stacktrace)
         // здесь показан пример, как можно обрабатывать исключение и отправлять свой текст/статус
         try {
-            priorityRepository.deleteById(id);
+            priorityService.deleteById(id);
         }catch (EmptyResultDataAccessException e){
             e.printStackTrace();
             return new ResponseEntity("id="+id+" not found", HttpStatus.NOT_ACCEPTABLE);
@@ -100,6 +100,6 @@ public class PriorityController {
     public ResponseEntity<List<Priority>> search(@RequestBody PrioritySearchValues prioritySearchValues){
 
         // если вместо текста будет пусто или null - вернутся все категории
-        return ResponseEntity.ok(priorityRepository.findByTitle(prioritySearchValues.getText()));
+        return ResponseEntity.ok(priorityService.findByTitle(prioritySearchValues.getText()));
     }
 }
