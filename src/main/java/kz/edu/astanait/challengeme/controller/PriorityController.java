@@ -23,10 +23,9 @@ public class PriorityController {
             this.priorityRepository = priorityRepository;
     }
 
-    @GetMapping("/test") // для тестирования адрес: http://localhost:8080/category/test
-    public List<Priority> test() {
-        List<Priority> list = priorityRepository.findAll();
-        return list; // JSON формат будет использоваться автоматически
+    @GetMapping("/all")
+    public List<Priority> findAll() {
+        return priorityRepository.findAllByOrderByIdAsc();
     }
     
     @PostMapping("/add")
