@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 // используем @RestController вместо обычного @Controller, чтобы все ответы сразу оборачивались в JSON
 // иначе пришлось бы выполнять лишнюю работу, использовать @ResponseBody для ответа, указывать тип отправки JSON
 @RequestMapping("/priority")// базовый адрес
+@CrossOrigin(origins = "http://localhost:4200")
 public class PriorityController {
     private PriorityService priorityService; // доступ к данным из БД
 

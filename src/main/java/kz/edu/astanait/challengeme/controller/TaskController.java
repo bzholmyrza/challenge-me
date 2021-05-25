@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 // Названия методов могут быть любыми, главное не дублировать их имена и URL mapping
 @RestController
 @RequestMapping("/task") // базовый адрес
+@CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
     private final TaskService taskService; // сервис для доступа к данным (напрямую к репозиториям не обращаемся)
 

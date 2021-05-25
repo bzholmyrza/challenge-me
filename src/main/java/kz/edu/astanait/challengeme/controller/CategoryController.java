@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 // иначе пришлось бы выполнять лишнюю работу, использовать @ResponseBody для ответа, указывать тип отправки JSON
 @RestController
 @RequestMapping ("/category") // базовый адрес
+@CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
     // доступ к данным из БД
     private CategoryService categoryService;
