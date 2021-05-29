@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Welcome Page</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+<body>
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Challenge me</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/challenge}">Challenges</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+    <img class="w3-image"
+         src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d322f30e-c6c7-4c87-a441-c9866c6da715/d4w8vpm-1da47fcf-420a-4ca6-ac97-b66b233adb2e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2QzMjJmMzBlLWM2YzctNGM4Ny1hNDQxLWM5ODY2YzZkYTcxNVwvZDR3OHZwbS0xZGE0N2ZjZi00MjBhLTRjYTYtYWM5Ny1iNjZiMjMzYWRiMmUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.GZOn_bwTe4Jgd2d9LW94iVBmJ7VumOyJbKKFBI-6lfo" alt="wallpaper" >
+    <div class="w3-display-middle w3-margin-top w3-center">
+        <h1 class="w3-xxlarge w3-text-white"><span class="w3-hide-small w3-text-light-grey">Challenge</span> <span class="w3-padding w3-black w3-opacity-min"><b>ME</b></span> </h1>
+        <h3 class="w3-text-white"> Open Endless Opportunities With Us </h3>
+    </div>
+</header>
+<div class="w3-content w3-padding" style="max-width:1564px">
+
+
+    <div class="w3-container w3-padding-32" id="about">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
+        <p>"Challenge me" is project from SE-1901 students for Software Factory course.<br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+    </div>
+
+    <div class="w3-row-padding w3-grayscale">
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <h3>Arailym Talgatkyzy</h3>
+            <p class="w3-opacity">Team Member</p>
+            <p> Lorem ipsum dolor sit amet</p>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+
+            <h3>Beibarys Zholmyrza</h3>
+            <p class="w3-opacity">Team Member</p>
+            <p> Lorem ipsum dolor sit amet</p>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+
+            <h3>Aruzhan Ali</h3>
+            <p class="w3-opacity">Team Member</p>
+            <p> Lorem ipsum dolor sit amet</p>
+        </div>
+    </div>
+
+</div>
+
+
+<footer class="w3-center w3-black w3-padding-16">
+    <p>May 2021</p>
+</footer>
+
+</body>
+</html>

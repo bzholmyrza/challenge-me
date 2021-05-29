@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Create Challenge</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+<body>
+
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Challenge me</a>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+<div class = "container">
+    <div class = "row">
+        <div class = "col-md-6 col-md-offset-3">
+
+            <h1> Create New Challenge </h1>
+            <form th:action="@{/saveChallenge}" th:object="${challenge}" method="post">
+                <!-- error message -->
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">Invalid</div>
+                </div>
+
+                <div class = "form-group">
+                    <label for = "title"> Title </label> :
+                    <input type="text" class = "form-control" th:field = "*{title}"  id ="title" name = "title"
+                           placeholder="Enter Title" autofocus="autofocus">
+                </div>
+
+                <div class = "form-group">
+                    <label for = "type"> Type </label> :
+                    <input type="text" class = "form-control" th:field = "*{type}"  id ="type" name = "type"
+                           placeholder="Enter Type" autofocus="autofocus">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>:
+                    <input type="text" class = "form-control" th:field = "*{description}"  id ="description" name = "description"
+                           placeholder="Enter Description" autofocus="autofocus">
+                </div>
+
+                <div>
+                    <label for="image">Image URL</label>:
+                    <input type="url" class = "form-control" th:field = "*{image}"  id ="image" name = "image"
+                           placeholder="Enter Image" autofocus="autofocus">
+                </div>
+
+                <div>
+                    <label for="start_date">Start Date</label>:
+                    <input type="date" class = "form-control" th:field = "*{startDate}"  id ="start_date" name = "start_date"
+                           autofocus="autofocus">
+                </div>
+
+                <div>
+                    <label for="end_date">End Date</label>:
+                    <input type="date" class = "form-control" th:field = "*{endDate}"  id ="end_date" name = "end_date"
+                           autofocus="autofocus">
+                </div>
+
+                <br>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-5">
+                            <input type="submit"
+                                   class="btn btn-info col-2" value="Create" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
