@@ -102,7 +102,7 @@ public class TaskController {
     @PostMapping("/search")
     public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues taskSearchValues) {
         // исключить NullPointerException
-        String text = taskSearchValues.getTitle() != null ? taskSearchValues.getTitle() : null;
+        String title = taskSearchValues.getTitle() != null ? taskSearchValues.getTitle() : null;
         // конвертируем Boolean в Integer
         Integer completed = taskSearchValues.getCompleted() != null ? taskSearchValues.getCompleted() : null;
 
@@ -125,7 +125,7 @@ public class TaskController {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
 
         // результат запроса с постраничным выводом
-        Page result = taskService.findByParams(text, completed, priorityId, categoryId, pageRequest);
+        Page result = taskService.findByParams(title, completed, priorityId, categoryId, pageRequest);
 
         // результат запроса
         return ResponseEntity.ok(result);

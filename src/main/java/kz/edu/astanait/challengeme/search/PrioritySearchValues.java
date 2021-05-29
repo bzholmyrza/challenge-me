@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PrioritySearchValues {
-    private String text;
+    private String title;
 }
