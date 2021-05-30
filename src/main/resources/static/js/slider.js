@@ -32,4 +32,9 @@ let left_mover = ()=>{
     }
 }
 span[1].onclick = ()=>{right_mover();}
+span[3].onclick = ()=>{right_mover();}
+span[5].onclick = ()=>{right_mover();}
+
 span[0].onclick = ()=>{left_mover();}
+span[2].onclick = ()=>{left_mover();}
+span[4].onclick = ()=>{left_mover();}

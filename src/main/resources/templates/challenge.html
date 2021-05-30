@@ -30,7 +30,9 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a th:href="@{/challenge}">Challenges</a></li>
+                <li><a href="http://localhost:4200/">To Do</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+
             </ul>
         </div>
     </div>
