@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Challenges</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" th:href="@{/css/homeSlider.css}">
+
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container" >
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Challenge me</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/challenge}">Challenges</a></li>
+                <li><a href="http://localhost:4200/">To Do</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+
+<nav  class="navbar navbar-expand-sm bg-light justify-content-center" style="background-color: #e3f2fd">
+    <div class="container-fluid" style="margin-left: 35%" >
+        <ul class="nav navbar-nav">
+            <li><a href="#allChallenge">All Challenges</a></li>
+            <li><a href="#myChallenge">My Challenges</a></li>
+            <li><a href="#enroll">Enrolled</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+
+<div id ="allChallenge" class = container my-2>
+    <main>
+    <header>
+        <h1> All Challenges </h1>
+        <p>
+            <span class="mover">&#139;</span>
+            <span class="mover">&#155;</span>
+        </p>
+    </header>
+    <section>
+        <div class="product" th:each="challenge : ${listChallenges}" >
+        <picture>
+            <img th:src="${challenge.image}" alt="">
+        </picture>
+        <div class="detail">
+            <p>
+                <b th:text="${challenge.title}"></b><br>
+                <small th:text="${challenge.description}"></small>
+            </p>
+        </div>
+        <div th:switch="${enrolled.contains(challenge)}" class="button" th:if="${challenge.getUserByAdminId().getId()!=user.getId()}">
+            <!--<form  th:unless="${enrolled.contains(challenge)}" th:action="@{/enroll}" method="post" >  <input hidden type="text" name="id" th:value="${challenge.getId()}">
+                <input  type="submit" value="Enroll" class="btn btn-success"></form>-->
+            <a th:case="false" th:href="@{/enroll/{id}(id=${challenge.id})}" class="btn btn-success">ENROLL</a>
+            <a th:case="true"  th:href="@{/cancel/{id}(id=${challenge.id})}" class="btn btn-danger">CANCEL</a>
+
+
+        </div>
+        </div></section></main>
+</div>
+<hr>
+<div id="myChallenge" class = container my-2>
+    <main>
+        <header>
+            <h1> My Challenges </h1>
+            <a th:href = "@{/showNewChallengeForm}" class="btn btn-primary btn-sm mb-3"> Create Challenge </a>
+            <p>
+                <span class="mover">&#139;</span>
+                <span class="mover">&#155;</span>
+            </p>
+        </header>
+        <section>
+            <div th:if="${challenge.getUserByAdminId().getId()==user.getId()}" class="product" th:each="challenge : ${listChallenges}">
+                <picture>
+                    <img th:src="${challenge.image}" alt="Challenge Image">
+                </picture>
+                <div class="detail">
+                    <p>
+                        <b th:text="${challenge.title}"></b><br>
+                        <small th:text="${challenge.description}"></small>
+                    </p>
+                </div>
+                <div class="button">
+                    <a th:href="@{/challengeUpdate/{id}(id=${challenge.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/deleteChallenge/{id}(id=${challenge.id})}" class="btn btn-danger">Delete</a></div>
+            </div></section></main></div>
+<hr>
+<div id="enroll" class = container my-2>
+    <main>
+        <header>
+            <h1> Enrolled Challenges </h1>
+            <p>
+                <span class="mover">&#139;</span>
+                <span class="mover">&#155;</span>
+            </p>
+        </header>
+        <section  >
+            <div th:each="enroll : ${enrolled}" th:if="${enroll.getUserByUserId().getId()==user.getId()}" class="product" >
+                <picture>
+                    <img th:src="${enroll.getChallengeByChallengeId().getImage()}" alt="Challenge Image">
+                </picture>
+                <div class="detail">
+                    <p>
+                        <b th:text="${enroll.getChallengeByChallengeId().getTitle()}"></b><br>
+                        <small th:text="${enroll.getChallengeByChallengeId().getDescription()}"></small>
+                    </p>
+                </div>
+                <div class="button">
+                    <a th:href="@{/cancel/{id}(id=${enroll.getChallengeByChallengeId().getId()})}" class="btn btn-danger">Cancel</a></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+
+</body>
+<script type="text/javascript" th:src="@{/js/slider.js}" ></script>
+</html>
