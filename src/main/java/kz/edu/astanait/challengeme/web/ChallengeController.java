@@ -24,9 +24,15 @@ public class ChallengeController {
     UserRepository userRepository;
     @Autowired
     ParticipantRepository participantRepository;
-    @Autowired
     private ChallengeService challengeService;
 
+    private ParticipantService participantService;
+
+    @Autowired
+    public ChallengeController(ChallengeService challengeService, ParticipantService participantService) {
+        this.challengeService = challengeService;
+        this.participantService = participantService;
+    }
 
     //private User user;
     //private Challenge challenge;
@@ -55,7 +61,7 @@ public class ChallengeController {
         User user = getCurrentUser();
         challenge.setUserByAdminId(user);
         challengeService.save(challenge);
-        return "redirect:/";
+        return "redirect:/challenge";
     }
 
     @GetMapping("/challengeUpdate/{id}")
@@ -88,7 +94,7 @@ public class ChallengeController {
         return "redirect:/challenge";
     }*/
 
-    @PostMapping("enroll")
+   /* @PostMapping("enroll")
     public RedirectView edit(HttpServletRequest request) {
         long id=Long.parseLong(request.getParameter("id"));
         Challenge challenge = challengeService.getChallengeById(id);
@@ -100,8 +106,27 @@ public class ChallengeController {
         participantRepository.save(participant);
         System.out.println("Test: "+ id);
         return new RedirectView("/challenge");
-    }
+    }*/
 
+    @GetMapping("/enroll/{id}")
+    public String enrollChallenge(@PathVariable (value = "id") long id) {
+        Challenge challenge = challengeService.getChallengeById(id);
+        User user = getCurrentUser();
+        Participant participant=new Participant();
+        participant.setChallengeByChallengeId(challenge);
+        participant.setUserByUserId(user);
+        participant.setUserXp((long) 0);
+        participantRepository.save(participant);
+        return "redirect:/challenge";
+    }
+    @GetMapping("/cancel/{id}")
+    public String cancelChallenge(@PathVariable (value = "id") long id) {
+        Challenge challenge = challengeService.getChallengeById(id);
+        User user = getCurrentUser();
+        Participant participant=participantService.getParticipantByChallengeByChallengeIdAndAndUserByUserId(challenge, user);
+        participantRepository.delete(participant);
+        return "redirect:/challenge";
+    }
 
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

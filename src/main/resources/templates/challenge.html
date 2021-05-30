@@ -11,19 +11,12 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" th:href="@{/css/homeSlider.css}">
-    <script type="text/javascript" th:src="@{/js/slider.js}" ></script>
 
-   <style>
-        .nav navbar-nav {
-           position: absolute;
-           left: 50%;
-           transform: translatex(-50%);
-       }
-   </style>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+    <div class="container" >
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed"
                     data-toggle="collapse" data-target="#navbar" aria-expanded="false"
@@ -35,7 +28,6 @@
             <a class="navbar-brand" href="#" th:href="@{/}">Challenge me</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-
             <ul class="nav navbar-nav">
                 <li><a th:href="@{/challenge}">Challenges</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
@@ -45,8 +37,9 @@
 </nav>
 <br>
 <br>
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;" >
-    <div class="container-fluid">
+
+<nav  class="navbar navbar-expand-sm bg-light justify-content-center" style="background-color: #e3f2fd">
+    <div class="container-fluid" style="margin-left: 35%" >
         <ul class="nav navbar-nav">
             <li><a href="#allChallenge">All Challenges</a></li>
             <li><a href="#myChallenge">My Challenges</a></li>
@@ -55,19 +48,20 @@
     </div>
 </nav>
 <br>
+<br>
+<br>
 
 <div id ="allChallenge" class = container my-2>
-<h1> All Challenges </h1>
     <main>
     <header>
-        <h1>Top Hottest Products</h1>
+        <h1> All Challenges </h1>
         <p>
             <span class="mover">&#139;</span>
             <span class="mover">&#155;</span>
         </p>
     </header>
     <section>
-        <div class="product" th:each="challenge : ${listChallenges}">
+        <div class="product" th:each="challenge : ${listChallenges}" >
         <picture>
             <img th:src="${challenge.image}" alt="">
         </picture>
@@ -76,63 +70,72 @@
                 <b th:text="${challenge.title}"></b><br>
                 <small th:text="${challenge.description}"></small>
             </p>
-            <samp th:text="${challenge.startDate+'-'+ challenge.endDate}"></samp>
         </div>
-        <div class="button">
-            <form th:if="${challenge.getUserByAdminId().getId()!=user.getId()}" th:action="@{/enroll}" method="post" >  <input hidden type="text" name="id" th:value="${challenge.getId()}">  <input type="submit" value="Enroll" class="btn btn-success"></form>
+        <div th:switch="${enrolled.contains(challenge)}" class="button" th:if="${challenge.getUserByAdminId().getId()!=user.getId()}">
+            <!--<form  th:unless="${enrolled.contains(challenge)}" th:action="@{/enroll}" method="post" >  <input hidden type="text" name="id" th:value="${challenge.getId()}">
+                <input  type="submit" value="Enroll" class="btn btn-success"></form>-->
+            <a th:case="false" th:href="@{/enroll/{id}(id=${challenge.id})}" class="btn btn-success">ENROLL</a>
+            <a th:case="true"  th:href="@{/cancel/{id}(id=${challenge.id})}" class="btn btn-danger">CANCEL</a>
+
+
         </div>
         </div></section></main>
-
-
-    <table class = "table table-striped table-responsive-md">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th> Actions </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr  th:each="challenge : ${listChallenges}">
-            <td th:text="${challenge.title}"></td>
-            <td th:text="${challenge.type}"></td>
-            <td th:text="${challenge.description}"></td>
-            <td > <a  th:if="${challenge.getUserByAdminId().getId()==user.getId()}" th:href="@{/challengeUpdate/{id}(id=${challenge.id})}" class="btn btn-primary">Update</a>
-                <a th:if="${challenge.getUserByAdminId().getId()==user.getId()}" th:href="@{/deleteChallenge/{id}(id=${challenge.id})}" class="btn btn-danger">Delete</a>
-                <form th:if="${challenge.getUserByAdminId().getId()!=user.getId()}" th:action="@{/enroll}" method="post" >  <input hidden type="text" name="id" th:value="${challenge.getId()}">  <input type="submit" value="Enroll" class="btn btn-success"></form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 <hr>
 <div id="myChallenge" class = container my-2>
-    <h1> My Challenges </h1>
-    <a th:href = "@{/showNewChallengeForm}" class="btn btn-primary btn-sm mb-3"> Create Challenge </a>
-    <table class = "table table-striped table-responsive-md">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th> Actions </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${challenge.getUserByAdminId().getId()==user.getId()}" th:each="challenge : ${listChallenges}">
-            <td th:text="${challenge.title}"></td>
-            <td th:text="${challenge.type}"></td>
-            <td th:text="${challenge.description}"></td>
-            <td > <a th:href="@{/challengeUpdate/{id}(id=${challenge.id})}" class="btn btn-primary">Update</a>
-                <a th:href="@{/deleteChallenge/{id}(id=${challenge.id})}" class="btn btn-danger">Delete</a></td>
-        </tr>
-        </tbody>
-    </table>
+    <main>
+        <header>
+            <h1> My Challenges </h1>
+            <a th:href = "@{/showNewChallengeForm}" class="btn btn-primary btn-sm mb-3"> Create Challenge </a>
+            <p>
+                <span class="mover">&#139;</span>
+                <span class="mover">&#155;</span>
+            </p>
+        </header>
+        <section>
+            <div th:if="${challenge.getUserByAdminId().getId()==user.getId()}" class="product" th:each="challenge : ${listChallenges}">
+                <picture>
+                    <img th:src="${challenge.image}" alt="Challenge Image">
+                </picture>
+                <div class="detail">
+                    <p>
+                        <b th:text="${challenge.title}"></b><br>
+                        <small th:text="${challenge.description}"></small>
+                    </p>
+                </div>
+                <div class="button">
+                    <a th:href="@{/challengeUpdate/{id}(id=${challenge.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/deleteChallenge/{id}(id=${challenge.id})}" class="btn btn-danger">Delete</a></div>
+            </div></section></main></div>
+<hr>
+<div id="enroll" class = container my-2>
+    <main>
+        <header>
+            <h1> Enrolled Challenges </h1>
+            <p>
+                <span class="mover">&#139;</span>
+                <span class="mover">&#155;</span>
+            </p>
+        </header>
+        <section  >
+            <div th:each="enroll : ${enrolled}" th:if="${enroll.getUserByUserId().getId()==user.getId()}" class="product" >
+                <picture>
+                    <img th:src="${enroll.getChallengeByChallengeId().getImage()}" alt="Challenge Image">
+                </picture>
+                <div class="detail">
+                    <p>
+                        <b th:text="${enroll.getChallengeByChallengeId().getTitle()}"></b><br>
+                        <small th:text="${enroll.getChallengeByChallengeId().getDescription()}"></small>
+                    </p>
+                </div>
+                <div class="button">
+                    <a th:href="@{/cancel/{id}(id=${enroll.getChallengeByChallengeId().getId()})}" class="btn btn-danger">Cancel</a></div>
+            </div>
+        </section>
+    </main>
 </div>
-
-<div id="enroll"></div>
 
 
 </body>
+<script type="text/javascript" th:src="@{/js/slider.js}" ></script>
 </html>
