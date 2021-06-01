@@ -10,9 +10,7 @@ import java.util.Collection;
 @Data
 public class Material {
     private Long id;
-    private String title;
     private String description;
-    private String image;
     private Integer points;
     private Challenge challengeByChallengeId;
     private Day dayByDayId;
@@ -30,16 +28,6 @@ public class Material {
     }
 
     @Basic
-    @Column(name = "title")
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Basic
     @Column(name = "description")
     public String getDescription() {
         return description;
@@ -47,16 +35,6 @@ public class Material {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Basic
-    @Column(name = "image")
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     @Basic

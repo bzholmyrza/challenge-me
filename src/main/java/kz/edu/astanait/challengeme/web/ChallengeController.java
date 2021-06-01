@@ -29,7 +29,6 @@ public class ChallengeController {
     @Autowired
     ParticipantRepository participantRepository;
     private ChallengeService challengeService;
-
     private ParticipantService participantService;
 
     @Autowired
@@ -60,7 +59,6 @@ public class ChallengeController {
 
     @RequestMapping("/saveChallenge")
     public String saveChallenge(@ModelAttribute("challenge") Challenge challenge){
-
         //challenge.setUserByAdminId(user);
         User user = getCurrentUser();
         challenge.setUserByAdminId(user);
