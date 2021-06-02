@@ -49,7 +49,7 @@
 
                 <li><a th:href="@{/enrolled/{id}(id=${challenge.getId()})}"><span th:text="${challenge.getTitle()}"></span></a></li>
                 <li><a th:href="@{/leaderboard/{id}(id=${challenge.getId()})}">Leaderboard</a></li>
-                <li><span th:text="${participant.getUserXp()}+'XP'"></span></li>
+                <li><a th:text="${participant.getUserXp()}+'XP'"></a></li>
             </ul>
         </div>
     </nav>
@@ -70,13 +70,12 @@
     <section th:id="${day.getId()}">
         <div>
             <span th:text="${day.getName()}"></span>
-            <div th:value=""
-            <div th:each="material:${activities}" th:value="${material.getMaterialByMaterialId().}">
-                <form action="/action_page.php">
-                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" checked="true">
-                    <label for="vehicle1"> I have a bike</label><br>
-                    <input type="submit" value="DONE" class="w3-button w3-green">
-                </form>
+            <div th:each="material:${materials}">
+                <div  th:if="${material.getDayByDayId().getId()==day.getId()}">
+                    <input type="checkbox" id="done" name="vehicle1" th:checked="${material.getActivitiesById().contains(user)}">
+                    <label for="done" th:text="${material.getDescription()+' ('+material.getPoints()+')'}"></label><br>
+                    <a th:href="@{/taskDone/{id}(id=${material.id})}"><input type="submit" value="DONE" class="w3-button w3-green"></a>
+                </div>
 
                 <!--<div style="display: flex" class="task-wrapper" th:if="${material.getDayByDayId().getId()==day.getId()}">
                     <p th:text="${material.getDescription()}"></p>

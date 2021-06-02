@@ -124,6 +124,7 @@
         </header>
         <section  >
             <div th:each="enroll : ${enrolled}" th:if="${enroll.getUserByUserId().getId()==user.getId()}" class="product" >
+                <a th:href="@{/enrolled/{id}(id=${enroll.getChallengeByChallengeId().getId()})}">
                 <picture>
                     <img th:src="${enroll.getChallengeByChallengeId().getImage()}" alt="Challenge Image">
                 </picture>
@@ -135,7 +136,7 @@
                 </div>
                 <div class="button">
                     <a th:href="@{/cancel/{id}(id=${enroll.getChallengeByChallengeId().getId()})}" class="btn btn-danger">Cancel</a></div>
-            </div>
+                </a> </div>
         </section>
     </main>
 </div>

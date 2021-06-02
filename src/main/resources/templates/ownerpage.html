@@ -75,13 +75,33 @@
                 <input type="text" placeholder="Give some points..." th:field="*{points}">
                 <input type="submit" value="CREATE TASK" class="w3-button w3-green" >
             </form>
-            <div th:each="material:${materials}">
+
+            <table style="width: 50%;">
+                <thead>
+                <tr>
+                    <th>TASK</th>
+                    <th>POINTS</th>
+                    <th></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr  th:each="material: ${materials}" th:if="${material.getDayByDayId().getId()==day.getId()}">
+                    <td th:text="${material.getDescription()}"></td>
+                    <td th:text="${material.getPoints()}"></td>
+                    <td> <a th:href="@{/deleteTask/{id}/{pid}(id=${material.getId()}, pid=${challenge.getId()})}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+    <!--        <div th:each="material:${materials}">
                 <div style="display: flex" class="task-wrapper" th:if="${material.getDayByDayId().getId()==day.getId()}">
                     <p th:text="${material.getDescription()}"></p>
                     <p th:text="${material.getPoints()}"></p>
                     <a th:href="@{/deleteTask/{id}/{pid}(id=${material.getId()}, pid=${challenge.getId()})}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 </div>
-            </div>
+            </div>-->
             <hr>
         </div>
     </section>

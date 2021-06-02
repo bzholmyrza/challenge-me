@@ -3,7 +3,6 @@ package kz.edu.astanait.challengeme.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Collection;
 
 @Entity
@@ -11,7 +10,7 @@ import java.util.Collection;
 public class Material {
     private Long id;
     private String description;
-    private Integer points;
+    private Long points;
     private Challenge challengeByChallengeId;
     private Day dayByDayId;
     private Collection<Activity> activitiesById;
@@ -39,11 +38,11 @@ public class Material {
 
     @Basic
     @Column(name = "points")
-    public Integer getPoints() {
+    public Long getPoints() {
         return points;
     }
 
-    public void setPoints(Integer points) {
+    public void setPoints(Long points) {
         this.points = points;
     }
 

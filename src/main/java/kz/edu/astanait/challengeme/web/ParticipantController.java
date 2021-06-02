@@ -1,8 +1,6 @@
 package kz.edu.astanait.challengeme.web;
 
-import kz.edu.astanait.challengeme.entity.Challenge;
-import kz.edu.astanait.challengeme.entity.Material;
-import kz.edu.astanait.challengeme.entity.User;
+import kz.edu.astanait.challengeme.entity.*;
 import kz.edu.astanait.challengeme.repository.UserRepository;
 import kz.edu.astanait.challengeme.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 @Controller
 public class ParticipantController {
     @Autowired
@@ -44,6 +45,24 @@ public class ParticipantController {
         model.addAttribute("materials",materialService.getAllMaterials(challenge));
         return "participantpage";
     }
+
+    @RequestMapping("/taskDone/{id}")
+    public String taskDone(@PathVariable(value = "id") long id){
+        Material material=materialService.getMaterial(id);
+        Challenge challenge=material.getChallengeByChallengeId();
+        long cid = challenge.getId();
+        Activity activity = new Activity();
+        activity.setUserByUserId(getCurrentUser());
+        activity.setChallengeByChallengeId(challenge);
+        activity.setMaterialByMaterialId(material);
+        Participant participant = participantService.getParticipantByChallengeByChallengeIdAndAndUserByUserId(challenge,getCurrentUser());
+        participant.setUserXp(participant.getUserXp()+material.getPoints());
+        participantService.save(participant);
+        activityService.save(activity);
+        System.out.println("TESTforBool: "+material.getActivitiesById().contains(getCurrentUser()));
+        return "redirect:/enrolled/"+cid;
+    }
+
 
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

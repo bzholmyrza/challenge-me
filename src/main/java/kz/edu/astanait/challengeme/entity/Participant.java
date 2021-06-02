@@ -25,7 +25,7 @@ public class Participant {
     }
 
     @Basic
-    @Column(name = "user_xp")
+    @Column(name = "user_xp", columnDefinition = "long default 0")
     public Long getUserXp(int i) {
         return userXp;
     }

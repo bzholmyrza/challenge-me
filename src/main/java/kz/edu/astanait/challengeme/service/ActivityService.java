@@ -24,4 +24,8 @@ public class ActivityService {
     public List<Activity> getChallengeActivities(Challenge challenge, User user){
         return activityRepository.getActivitiesByChallengeByChallengeIdAndUserByUserId(challenge, user);
     }
+
+    public void save(Activity activity){
+        activityRepository.save(activity);
+    }
 }
