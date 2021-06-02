@@ -30,4 +30,16 @@ public class ParticipantService{
       return   participantRepository.getParticipantByChallengeByChallengeIdAndAndUserByUserId(challenge, user);
 
     }
+
+    public List<Participant> findAll() {
+        return participantRepository.findAll();
+    }
+    public List<Participant> getPartcipantsForLeaderboard(Challenge challenge){
+        return participantRepository.getParticipantsByChallengeByChallengeIdOrderByUserXpDesc(challenge);
+    }
+
+    public  Participant getParticipant(Challenge challenge, User user){
+        return participantRepository.getParticipantByChallengeByChallengeIdAndUserByUserId(challenge, user);
+    }
+
 }

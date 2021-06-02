@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title  th:text="${challenge.getTitle()}"></title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://use.fontawesome.com/23ff139f6d.js"></script>
+    <style>
+        .task-wrapper p{
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container" >
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Challenge me</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/challenge}">Challenges</a></li>
+                <li><a href="http://localhost:4200/">To Do</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<header style="position: fixed; width: 100%;  z-index: 999">
+    <nav  class="navbar navbar-expand-sm bg-light justify-content-center" style="background-color: #e3f2fd">
+        <div class="container-fluid" style="margin-left: 35%" >
+            <ul class="nav navbar-nav">
+
+                <li><a th:href="@{/enrolled/{id}(id=${challenge.getId()})}"><span th:text="${challenge.getTitle()}"></span></a></li>
+                <li><a th:href="@{/leaderboard/{id}(id=${challenge.getId()})}">Leaderboard</a></li>
+                <li><span th:text="${participant.getUserXp()}+'XP'"></span></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<br>
+<br>
+<div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="leftMenu">
+    <button onclick="closeLeftMenu()" class="w3-bar-item w3-button w3-large">Close &times;</button>
+    <div th:each="day:${days}"> <a th:href="'#'+${day.getId()}" class="w3-bar-item w3-button" th:text="${day.getName()}"></a></div>
+</div>
+<div class="w3-teal">
+    <button class="w3-button w3-teal w3-xlarge w3-left" onclick="openLeftMenu()">&#9776;</button>
+</div>
+<br>
+<br>
+<br>
+<div class="w3-container" th:each="day:${days}" style="margin: 0 100px 0; padding: 15px 100px 5px; border: darkturquoise solid">
+    <section th:id="${day.getId()}">
+        <div>
+            <span th:text="${day.getName()}"></span>
+            <div th:value=""
+            <div th:each="material:${activities}" th:value="${material.getMaterialByMaterialId().}">
+                <form action="/action_page.php">
+                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" checked="true">
+                    <label for="vehicle1"> I have a bike</label><br>
+                    <input type="submit" value="DONE" class="w3-button w3-green">
+                </form>
+
+                <!--<div style="display: flex" class="task-wrapper" th:if="${material.getDayByDayId().getId()==day.getId()}">
+                    <p th:text="${material.getDescription()}"></p>
+                    <p th:text="${material.getPoints()}"></p>
+                    </div>-->
+            </div>
+            <hr>
+        </div>
+    </section>
+</div>
+
+<script>
+    function openLeftMenu() {
+        document.getElementById("leftMenu").style.display = "block";
+    }
+
+    function closeLeftMenu() {
+        document.getElementById("leftMenu").style.display = "none";
+    }
+
+</script>
+
+</body>
+</html>

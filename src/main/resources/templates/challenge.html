@@ -39,7 +39,7 @@
 </nav>
 <br>
 <br>
-
+<header style="position: fixed; width: 100%;  z-index: 999">
 <nav  class="navbar navbar-expand-sm bg-light justify-content-center" style="background-color: #e3f2fd">
     <div class="container-fluid" style="margin-left: 35%" >
         <ul class="nav navbar-nav">
@@ -49,6 +49,7 @@
         </ul>
     </div>
 </nav>
+</header>
 <br>
 <br>
 <br>
@@ -85,6 +86,7 @@
 </div>
 <hr>
 <div id="myChallenge" class = container my-2>
+
     <main>
         <header>
             <h1> My Challenges </h1>
@@ -96,6 +98,7 @@
         </header>
         <section>
             <div th:if="${challenge.getUserByAdminId().getId()==user.getId()}" class="product" th:each="challenge : ${listChallenges}">
+                <a th:href="@{/mychallenge/{id}(id=${challenge.getId()})}">
                 <picture>
                     <img th:src="${challenge.image}" alt="Challenge Image">
                 </picture>
@@ -108,7 +111,7 @@
                 <div class="button">
                     <a th:href="@{/challengeUpdate/{id}(id=${challenge.id})}" class="btn btn-primary">Update</a>
                     <a th:href="@{/deleteChallenge/{id}(id=${challenge.id})}" class="btn btn-danger">Delete</a></div>
-            </div></section></main></div>
+                </a></div></section></main></div>
 <hr>
 <div id="enroll" class = container my-2>
     <main>
