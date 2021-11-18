@@ -27,8 +27,9 @@ public class MaterialService {
     public List<Material> getAllMaterials(Challenge challenge){
         return materialRepository.getMaterialsByChallengeByChallengeId(challenge);
     }
-
-
+    public Material getMaterial(long id){
+        return materialRepository.getMaterialsById(id);
+    }
     public void save(Material material) {
         this.materialRepository.save(material);
     }

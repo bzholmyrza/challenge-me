@@ -7,6 +7,7 @@ import kz.edu.astanait.challengeme.repository.ParticipantRepository;
 import kz.edu.astanait.challengeme.repository.UserRepository;
 import kz.edu.astanait.challengeme.service.ChallengeService;
 import kz.edu.astanait.challengeme.service.ParticipantService;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -30,6 +33,7 @@ public class ChallengeController {
     ParticipantRepository participantRepository;
     private ChallengeService challengeService;
     private ParticipantService participantService;
+    private String status = "success";
 
     @Autowired
     public ChallengeController(ChallengeService challengeService, ParticipantService participantService) {
@@ -46,6 +50,7 @@ public class ChallengeController {
         model.addAttribute("user",user);
         model.addAttribute("listChallenges", challengeService.findAll());
         model.addAttribute("enrolled", participantRepository.findAll());
+        model.addAttribute("status", status);
         return "challenge";
     }
 
@@ -111,14 +116,17 @@ public class ChallengeController {
     }*/
 
     @GetMapping("/enroll/{id}")
-    public String enrollChallenge(@PathVariable (value = "id") long id) {
-        Challenge challenge = challengeService.getChallengeById(id);
+    public String enrollChallenge(@PathVariable (value = "id") long id, Principal cuser) {
+        User user=userRepository.findByEmail(cuser.getName());
+        status = participantService.enroll(id, user);
+        /*Challenge challenge = challengeService.getChallengeById(id);
         User user = getCurrentUser();
         Participant participant=new Participant();
         participant.setChallengeByChallengeId(challenge);
         participant.setUserByUserId(user);
         participant.setUserXp((long) 0);
-        participantRepository.save(participant);
+        participantRepository.save(participant);*/
+
         return "redirect:/challenge";
     }
     @GetMapping("/cancel/{id}")
