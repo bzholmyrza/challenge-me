@@ -40,7 +40,8 @@
     <nav  class="navbar navbar-expand-sm bg-light justify-content-center" style="background-color: #e3f2fd">
         <div class="container-fluid" style="margin-left: 35%" >
             <ul class="nav navbar-nav">
-                <li><a th:href="@{/mychallenge/{id}(id=${challenge.getId()})}"><span th:text="${challenge.getTitle()}"></span></a></li>
+
+                <li><a th:href="@{/enrolled/{id}(id=${challenge.getId()})}"><span th:text="${challenge.getTitle()}"></span></a></li>
                 <li><a th:href="@{/leaderboard/{id}(id=${challenge.getId()})}">Leaderboard</a></li>
                 <li><a href="#enroll"><!--<span th:text="">--></span></a></li>
             </ul>

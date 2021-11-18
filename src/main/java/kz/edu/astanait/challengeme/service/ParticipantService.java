@@ -12,10 +12,11 @@ import java.util.List;
 @Service
 public class ParticipantService{
     private final ParticipantRepository participantRepository;
-
+    private ChallengeService challengeService;
     @Autowired
-    public ParticipantService(ParticipantRepository participantRepository) {
+    public ParticipantService(ParticipantRepository participantRepository, ChallengeService challengeService) {
         this.participantRepository = participantRepository;
+        this.challengeService=challengeService;
     }
 
     public void save(Participant participant) {
@@ -40,6 +41,22 @@ public class ParticipantService{
 
     public  Participant getParticipant(Challenge challenge, User user){
         return participantRepository.getParticipantByChallengeByChallengeIdAndUserByUserId(challenge, user);
+    }
+
+    public String enroll(long id, User user){
+        Challenge challenge = challengeService.getChallengeById(id);
+        Participant participan=participantRepository.getParticipantByChallengeByChallengeIdAndAndUserByUserId(challenge, user);
+        if(participan!=null){
+        return "enrolled";
+        }
+        else {
+            Participant participant = new Participant();
+            participant.setChallengeByChallengeId(challenge);
+            participant.setUserByUserId(user);
+            participant.setUserXp((long) 0);
+            participantRepository.save(participant);
+            return "success";
+        }
     }
 
 }

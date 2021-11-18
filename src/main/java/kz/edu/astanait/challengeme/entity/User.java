@@ -34,6 +34,9 @@ public class User {
         this.roles = roles;
     }
 
+    public User(String john, String smith, String s, String uk, String abc123456) {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

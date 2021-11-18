@@ -17,5 +17,4 @@ void deleteById(long id);
     List<Material> getMaterialsByDayByDayIdAndChallengeByChallengeId(Day day, Challenge challenge);
     List<Material> getMaterialsByChallengeByChallengeId(Challenge challenge);
     Material getMaterialsById(long id);
-
 }
